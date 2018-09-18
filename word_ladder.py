@@ -1,5 +1,6 @@
 import string, math
 import  collections
+import sys
 from itertools import combinations
 from string import ascii_lowercase as lower
 #words is a list of words that are allowed to be used in the word ladder
@@ -23,11 +24,12 @@ def word_ladder(start,end):
     bfsTree = BFS(g,start)
     if bfsTree[end][0] == math.inf:
         return "The there is no word ladder for the two chosen words"
-    return getPathFromStartToEnd(bfsTree,end)
-    
-    
+    print(getPathFromStartToEnd(bfsTree,end))
+    #return 
+
+
 def wordsWithSameLength(start,words):
-    return [word for word in words if len(word) == len(start)]     
+    return [word for word in words if len(word) == len(start)]
 #w1 and w2 are words of the same length
 #returns true if they differ by one letter, false otherwise
 def difByOneLetter(w1,w2):
@@ -57,8 +59,8 @@ def buildGraph(start,end,words):
 #runs BFS on undirected graph g starting at vertex s
 #the function returns a dictionary where the keys are the names of the vertices and the values
 #are lists of length two hwere the first value of the list is the distance from the key to s, and
-#the second value is the parent of key in the BFS tree. 
-def BFS(g, s):    
+#the second value is the parent of key in the BFS tree.
+def BFS(g, s):
     dist = {word : [math.inf, None] for word in g}
     q = collections.deque()
     dist[s][0] = 0
@@ -70,7 +72,7 @@ def BFS(g, s):
                 dist[v2][0] = dist[v1][0] + 1
                 dist[v2][1] = v1
                 q.append(v2)
-    return dist       
+    return dist
 def getPathFromStartToEnd(bfsTree,end):
     path = [end]
     endVertex = bfsTree[end]
@@ -83,6 +85,13 @@ def getPathFromStartToEnd(bfsTree,end):
         parent = nextVertex[1]
     return path
 
+def main(str1,str2):
+    word_ladder(str1,str2)
 
-       
- 
+
+if __name__ == '__main__':
+    '''Check to make sure that only two commandline arguments were passed in.'''
+    if(len(sys.argv) == 3):
+        main(sys.argv[1],sys.argv[2])
+    else:
+       print("Error: incorrect number of arguments")
